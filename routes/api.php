@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\BookController;
+use App\Http\Controllers\RegisterController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -37,3 +38,6 @@ Route::get('/history/{userId}', [BookController::class, 'getBorrowingHistory']);
 
 // Route for registering a profile using QR Code
 Route::post('/register-from-qr-code', [BookController::class, 'registerFromQRCode']);
+
+// Route for registering a user
+Route::post('register', [RegisterController::class, 'register']);
