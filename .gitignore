@@ -1,0 +1,12 @@
+# Ignore vendor directory
+/vendor/
+
+# Ignore .env file
+.env
+
+# Ignore storage directory
+/storage/
+
+# Ignore user-specific files
+.idea/
+.vscode/
