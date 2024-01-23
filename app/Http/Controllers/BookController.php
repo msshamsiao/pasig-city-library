@@ -3,37 +3,87 @@
 namespace App\Http\Controllers;
 
 use App\Models\Book;
+use App\Models\MemberLibrary;
 use App\Models\Reservation;
 use App\Models\Transaction;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
 
 class BookController extends Controller
 {
     public function search(Request $request)
     {
-        $searchTerm = $request->input('search');
+        $searchTerm = $request->input('query');
+        $category = $request->input('category');
 
-        $books = Book::when($searchTerm, function ($query) use ($searchTerm) {
-            $query->where('title', 'like', '%' . $searchTerm . '%')
-                ->orWhere('subject', 'like', '%' . $searchTerm . '%')
-                ->orWhere('author', 'like', '%' . $searchTerm . '%')
-                ->orWhere('isbn', 'like', '%' . $searchTerm . '%')
-                ->orWhere('issn', 'like', '%' . $searchTerm . '%');
-        })->get();
+        $query = Book::query();
 
-        return response()->json(['success' => true, 'books' => $books, 'searchTerm' => $searchTerm], 200);
+        if ($searchTerm) {
+            $query->where(function ($subQuery) use ($searchTerm, $category) {
+                if ($category) {
+                    $subQuery->where($category, 'like', '%' . $searchTerm . '%');
+                } else {
+                    $subQuery->where('title', 'like', '%' . $searchTerm . '%')
+                            ->orWhere('subject', 'like', '%' . $searchTerm . '%')
+                            ->orWhere('author', 'like', '%' . $searchTerm . '%')
+                            ->orWhere('isbn', 'like', '%' . $searchTerm . '%')
+                            ->orWhere('issn', 'like', '%' . $searchTerm . '%');
+                }
+            });
+        }
+
+        $books = $query->get();
+
+        return view('search', ['books' => $books, 'searchTerm' => $searchTerm]);
     }
 
-    public function borrowBook(Request $request, $bookId, $userId)
+    public function showBorrowForm($bookId)
     {
         $book = Book::findOrFail($bookId);
-        $user = User::findOrFail($userId);
+        return view('borrow', ['book' => $book]);
+    }
+
+    public function memberLibrary()
+    {
+        $memberLibraries = Memberlibrary::get();
+        return view('borrow-form', ['memberLibraries' => $memberLibraries]);
+    }
+
+    public function borrowBook(Request $request, $bookId, $userId = null)
+    {
+        $validator = Validator::make($request->all(), [
+            'book_id' => 'required|exists:books,id',
+            'user_name' => 'required|string|max:255',
+            'user_email' => 'required|email|max:255',
+            'school' => 'required|string|max:255', // Add school validation
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['error' => $validator->errors()], 422);
+        }
+
+        // Check if the book exists
+        $book = Book::find($request->input('book_id'));
+
+        if (!$book) {
+            return view('search', ['BookNotFound' => true]);
+        }
+
+        // If no user ID is provided, try to find the user by email
+        $user = User::where('email', $request->input('user_email'))->first();
+
+        // If the user doesn't exist, return the borrow view with userNotFound set to true
+        if (!$user) {
+            return view('borrow', ['userNotFound' => true, 'book' => $book]);
+        }
 
         // Check if the book is available for borrowing
         if (!$book->available) {
-            return response()->json(['error' => 'Book is not available for borrowing'], 400);
+            return view('search', ['BookNotAvailable' => true]);
         }
 
         // Check if the user has already borrowed the maximum allowed number of books
@@ -42,8 +92,13 @@ class BookController extends Controller
             ->count();
 
         if ($borrowedBooksCount >= 3) {
-            return response()->json(['error' => 'User has already borrowed the maximum allowed number of books'], 400);
+            return view('search', ['MaxBookAllowed' => true]);
         }
+
+        // Check if the book's school matches the user's school
+        // if ($book->school !== $request->input('school')) {
+        //     return view('search', ['NotFoundBook' => true]);
+        // }
 
         // Implement borrowing logic here
         try {
@@ -53,26 +108,28 @@ class BookController extends Controller
             // Update book availability
             $book->update(['available' => false]);
 
-            // Create a transaction record
+            // Calculate return date (7 days from now)
+            $returnDate = now()->addDays(7);
+
+            // Create a transaction record with return date and set approved to false
             $transaction = Transaction::create([
                 'user_id' => $user->id,
                 'book_id' => $book->id,
                 'borrowed' => true,
+                'return_date' => $returnDate,
+                'approved' => false,
             ]);
 
             // Commit the transaction
             DB::commit();
 
-            return response()->json([
-                'success' => true,
-                'message' => 'Book borrowed successfully',
-                'transaction' => $transaction,
-            ], 200);
+            return view('search', ['SuccessBorrow' => true]);
+
         } catch (\Exception $e) {
             // An error occurred, rollback the transaction
             DB::rollBack();
 
-            return response()->json(['error' => 'Failed to borrow the book'], 500);
+            return response()->json(['error' => 'Failed to submit book borrowing request'], 500);
         }
     }
 

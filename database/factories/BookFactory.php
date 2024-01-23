@@ -19,6 +19,9 @@ class BookFactory extends Factory
         $issn = $this->faker->optional(0.7)->isbn10;
         $issn = $issn !== null ? $issn : $this->faker->unique()->isbn10;
 
+        // Define an array of possible schools
+        $schools = ['School A', 'School B', 'School C', 'School D', 'School E'];
+
         return [
             'title' => $this->faker->sentence,
             'author' => $this->faker->name,
@@ -26,6 +29,7 @@ class BookFactory extends Factory
             'isbn' => $isbn,
             'issn' => $issn,
             'available' => $this->faker->boolean,
+            'school' => $this->faker->randomElement($schools),
         ];
     }
 }

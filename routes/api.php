@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\BookController;
+use App\Http\Controllers\LibrarianController;
 use App\Http\Controllers\RegisterController;
 /*
 |--------------------------------------------------------------------------
@@ -15,9 +16,9 @@ use App\Http\Controllers\RegisterController;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+/*Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
-});
+});*/
 
 // Routes for searching books
 Route::get('/search', [BookController::class, 'search']);
@@ -41,3 +42,6 @@ Route::post('/register-from-qr-code', [BookController::class, 'registerFromQRCod
 
 // Route for registering a user
 Route::post('register', [RegisterController::class, 'register']);
+
+// Route for approve transaction by librarian
+Route::put('/approve-transaction/{transactionId}', [LibrarianController::class, 'approveTransaction']);

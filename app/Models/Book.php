@@ -9,7 +9,15 @@ class Book extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['title', 'author', 'subject', 'isbn', 'issn', 'available'];
+    protected $fillable = [
+        'title', 
+        'author', 
+        'subject', 
+        'isbn', 
+        'issn', 
+        'available', 
+        'school'
+    ];
 
     public function scopeSearch($query, $searchTerm){
         return $query->where('title', 'like', '%' . $searchTerm . '%')
