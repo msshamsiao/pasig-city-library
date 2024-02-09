@@ -19,24 +19,15 @@
   <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;500&family=Inter:wght@400;500&family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
 
   <!-- Vendor CSS Files -->
-<link href="{{ asset('assets/vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
-<link href="{{ asset('assets/vendor/bootstrap-icons/bootstrap-icons.css') }}" rel="stylesheet">
-<link href="{{ asset('assets/vendor/swiper/swiper-bundle.min.css') }}" rel="stylesheet">
-<link href="{{ asset('assets/vendor/glightbox/css/glightbox.min.css') }}" rel="stylesheet">
-<link href="{{ asset('assets/vendor/aos/aos.css') }}" rel="stylesheet">  
-
+  <link href="{{ asset('assets/vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
+  <link href="{{ asset('assets/vendor/bootstrap-icons/bootstrap-icons.css') }}" rel="stylesheet">
+  <link href="{{ asset('assets/vendor/swiper/swiper-bundle.min.css') }}" rel="stylesheet">
+  <link href="{{ asset('assets/vendor/glightbox/css/glightbox.min.css') }}" rel="stylesheet">
+  <link href="{{ asset('assets/vendor/aos/aos.css') }}" rel="stylesheet">  
 
   <!-- Template Main CSS Files -->
   <link href="assets/css/variables.css" rel="stylesheet">
   <link href="assets/css/main.css" rel="stylesheet">
-
-  <!-- =======================================================
-  * Template Name: ZenBlog
-  * Updated: Jan 09 2024 with Bootstrap v5.3.2
-  * Template URL: https://bootstrapmade.com/zenblog-bootstrap-blog-template/
-  * Author: BootstrapMade.com
-  * License: https:///bootstrapmade.com/license/
-  ======================================================== -->
 </head>
 
 <body>
@@ -93,7 +84,42 @@
             @endif
         
             <!-- Your existing borrow form or include it as a partial -->
-            @include('partials.borrow-form')
+            <form id="borrowForm" action="{{ route('reserve') }}" method="post">
+                @csrf
+                <input type="hidden" name="book_id" value="{{ $book->id ?? null }}">
+                <!-- Other form fields go here -->
+                <div class="mb-3">
+                    <label for="user_name" class="form-label">Your Name</label>
+                    <input type="text" class="form-control" id="user_name" name="user_name" required>
+                </div>
+                <div class="mb-3">
+                    <label for="user_email" class="form-label">Your Email</label>
+                    <input type="email" class="form-control" id="user_email" name="user_email" required>
+                </div>
+                @php
+                    $userEmail = request()->input('user_email');
+                    $user = \App\Models\User::where('email', $userEmail)->first();
+                @endphp
+                @if (!$user)
+                    <div class="mb-3">
+                        <label for="user_password" class="form-label">Your Password</label>
+                        <input type="password" class="form-control" id="user_password" name="user_password" required>
+                    </div>
+                @endif
+                <div class="mb-3">
+                    <label for="school" class="form-label">Member Library</label>
+                    <select class="form-control" name="member_library" id="member_library" required>
+                        <option value="">All Member Libraries</option>
+                        @php
+                            $memberLibraries = \App\Models\MemberLibrary::get();
+                        @endphp
+                          @foreach($memberLibraries as $memberLibrary)
+                              <option value="{{ $memberLibrary->id }}">{{ $memberLibrary->member_library_name }}</option>
+                          @endforeach
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
         
             <!-- Add any additional content or styling as needed -->
         </div>

@@ -19,12 +19,11 @@
   <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;500&family=Inter:wght@400;500&family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
 
   <!-- Vendor CSS Files -->
-<link href="{{ asset('assets/vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
-<link href="{{ asset('assets/vendor/bootstrap-icons/bootstrap-icons.css') }}" rel="stylesheet">
-<link href="{{ asset('assets/vendor/swiper/swiper-bundle.min.css') }}" rel="stylesheet">
-<link href="{{ asset('assets/vendor/glightbox/css/glightbox.min.css') }}" rel="stylesheet">
-<link href="{{ asset('assets/vendor/aos/aos.css') }}" rel="stylesheet">  
-
+  <link href="{{ asset('assets/vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
+  <link href="{{ asset('assets/vendor/bootstrap-icons/bootstrap-icons.css') }}" rel="stylesheet">
+  <link href="{{ asset('assets/vendor/swiper/swiper-bundle.min.css') }}" rel="stylesheet">
+  <link href="{{ asset('assets/vendor/glightbox/css/glightbox.min.css') }}" rel="stylesheet">
+  <link href="{{ asset('assets/vendor/aos/aos.css') }}" rel="stylesheet">  
 
   <!-- Template Main CSS Files -->
   <link href="assets/css/variables.css" rel="stylesheet">
@@ -45,9 +44,8 @@
   <header id="header" class="header d-flex align-items-center fixed-top">
     <div class="container-fluid container-xl d-flex align-items-center justify-content-between">
 
-      <a href="index.html" class="logo d-flex align-items-center">
-        <!-- Uncomment the line below if you also wish to use an image logo -->
-        <img src="{{ asset('Pasig_Logo.png') }}" alt="Pasig Logo" width="50" height="80">
+      <a href="home.html" class="logo d-flex align-items-center">
+        <img src="{{ asset('assets/Pasig_Logo.png') }}" alt="Pasig Logo" width="50" height="80">
       </a>
 
       <nav id="navbar" class="navbar">
@@ -98,11 +96,11 @@
         </div>
         <form action="{{ route('search') }}" method="get">
             <div class="row">
-                  {{-- @if(isset($NotFoundBook) && $NotFoundBook)
+                  @if(isset($NotFoundBook) && $NotFoundBook)
                       <div class="alert alert-warning" role="alert">
                           Book does not belong to the specified member library. Try another member library.
                       </div>
-                  @endif --}}
+                  @endif
 
                   @if(isset($BookNotAvailable) && $BookNotAvailable)
                       <div class="alert alert-warning" role="alert">
@@ -122,20 +120,44 @@
                       </div>
                   @endif
 
-                  @if(isset($SuccessBorrow) && $SuccessBorrow)
-                      <div class="alert alert-success" role="alert">
-                        Book borrowing request submitted. Awaiting librarian approval.
+                  @if (isset($SuccessReserve) && $SuccessReserve)
+                    <div class="alert alert-warning" role="alert">
+                      Book reserved successfully.
+                    </div>
+                  @endif
+
+                  @if (isset($SuccessBorrow) && $SuccessBorrow)
+                    <div class="alert alert-warning" role="alert">
+                        Book borrowed successfully.
+                    </div>
+                  @endif
+
+                  @if (session()->has('success'))
+                      <div class="alert alert-success">
+                          {{ session('success') }}
                       </div>
                   @endif
+
+                  @if ($errors->any())
+                      <div class="alert alert-danger" role="alert">
+                          @foreach ($errors->all() as $error)
+                              {{ $error }}
+                          @endforeach
+                      </div>
+                  @endif
+
                 <div class="col-md-2">
                     <div class="form-group">
                         <label for="category">Filter by Member Library:</label>
-                        <select class="form-control" name="school" id="school">
-                            <option value="">All Member Library</option>
-                            <option value="PLP">Pamantasan ng Lungsod ng Pasig</option>
-                            <option value="RHS">Rizal High School</option>
-                            <option value="PCSHS">Pasig City Science High School</option>
-                        </select>
+                        <select class="form-control" name="member_library" id="member_library">
+                          <option value="">All Member Libraries</option>
+                          @php
+                              $memberLibraries = \App\Models\MemberLibrary::get();
+                          @endphp
+                            @foreach($memberLibraries as $memberLibrary)
+                                <option value="{{ $memberLibrary->id }}">{{ $memberLibrary->name }}</option>
+                            @endforeach
+                      </select>
                     </div>
                 </div>
                 <div class="col-md-2">
@@ -163,44 +185,91 @@
         </form>
 
         @if(isset($books) && count($books) > 0 && $searchTerm)
-            <h2>Search Results for "{{ $searchTerm }}"</h2>
-        
+            <h5>Search Results for "{{ $searchTerm }}"</h5>
+
             <div class="row">
                 @foreach($books as $book)
                     <div class="card">
-                        <h5 class="card-header h5">Title: {{ $book->title }}</h5>
+                        <h5 class="card-header">Title: {{ $book->title }}</h5>
                         <div class="card-body">
                           <h5 class="card-title">Author: {{ $book->author }}</h5>
                           <p class="card-text">Subject: {{ $book->subject }}.</p>
                           <p class="card-text">ISBN: {{ $book->isbn }}</p>
                           <p class="card-text">ISSN: {{ $book->issn }}</p>
-                          <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#borrowModal" data-bookid="{{ $book->id }}">
-                            Borrow Book
-                        </button>
+                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#borrowModal" data-bookid="{{ $book->id }}">
+                              Reserve Book
+                            </button>
                         </div>
-                      </div>
+                    </div>
                 @endforeach
-            </div>
-        @elseif(isset($books) && count($books) == 0 && $searchTerm)
-            <p>No results found for "{{ $searchTerm }}"</p>
-        @endif
-    
-        <!-- Add this at the beginning of your view file -->
-        <div class="modal fade" id="borrowModal" tabindex="-1" aria-labelledby="borrowModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <!-- Modal content goes here -->
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="borrowModalLabel">Reserve Book</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        @include('partials.borrow-form') <!-- Include the borrow form partial --><br/>
-                        <p id="newUserMessage" class="text-muted">Don't have an account? You will be registered when submitting the borrow request.</p>
-                    </div>
+
+                <!-- Add this at the beginning of your view file -->
+                <div class="modal fade" id="borrowModal" tabindex="-1" aria-labelledby="borrowModalLabel" aria-hidden="true">
+                  <div class="modal-dialog">
+                      <div class="modal-content">
+                          <!-- Modal content goes here -->
+                          <div class="modal-header">
+                              <h5 class="modal-title" id="borrowModalLabel">Reserve Book</h5>
+                              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                          </div>
+                          <div class="modal-body">
+                            <form id="borrowForm" action="{{ route('reserve', ['bookId' => $book->id]) }}" method="post">
+                                  @csrf
+                                  <input type="hidden" name="book_id" value="{{ $book->id ?? null }}">
+                                  <!-- Other form fields go here -->
+                                  <div class="mb-3">
+                                      <label for="user_name" class="form-label">Your Name</label>
+                                      <input type="text" class="form-control" id="user_name" name="user_name" required>
+                                  </div>
+                                  <div class="mb-3">
+                                      <label for="user_email" class="form-label">Your Email</label>
+                                      <input type="email" class="form-control" id="user_email" name="user_email" required>
+                                  </div>
+                                  <div class="mb-3 row">
+                                    <div class="col-md-6">
+                                      <div class="form-group">
+                                        <label for="user_email" class="form-label">Please choose date</label>
+                                        <input type="date" class="form-control" id="date" name="date" required>
+                                      </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                      <div class="form-group">
+                                        <label for="user_email" class="form-label">Please choose time session</label>
+                                        <select class="form-select" id="ampm_select" name="ampm_select" required>
+                                          <option value="AM">AM</option>
+                                          <option value="PM">PM</option>
+                                      </select>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div class="mb-3">
+                                      <label for="school" class="form-label">Member Library</label>
+                                      <select class="form-control" name="member_library" id="member_library" required>
+                                          <option value="">All Member Libraries</option>
+                                          @php
+                                              $memberLibraries = \App\Models\MemberLibrary::get();
+                                          @endphp
+                                            @foreach($memberLibraries as $memberLibrary)
+                                                <option value="{{ $memberLibrary->id }}">{{ $memberLibrary->name }}</option>
+                                            @endforeach
+                                      </select>
+                                  </div>
+                                  <button type="submit" class="btn btn-primary">Submit</button>
+                            </form>
+                              <br/>
+                              <p id="newUserMessage" class="text-muted">Don't have an account? You will be registered when submitting the reserve request.</p>
+                          </div>
+                      </div>
+                  </div>
                 </div>
             </div>
-        </div>
+        @elseif(isset($searchTerm))
+            <p>{{ $searchTerm }}</p>
+        @elseif(isset($message))
+            <p>{{ $message }}</p>
+        @endif
+
+
       </div>
     </section>
 
@@ -215,8 +284,7 @@
         <div class="row g-5">
           <div class="col-lg-12">
             <h3 class="footer-heading">About Pasig City Library</h3>
-            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Magnam ab, perspiciatis beatae autem deleniti voluptate nulla a dolores, exercitationem eveniet libero laudantium recusandae officiis qui aliquid blanditiis omnis quae. Explicabo?</p>
-            <p><a href="about.html" class="footer-link-more">Learn More</a></p>
+            <p>A collaborative network of libraries. It promotes literacy, education, and community engagement in Pasig City. Through our combined efforts, we strive to provide access to a wide range of resources, including books, digital media, and educational programs, to enrich the lives of our residents. The Consortium serves as a hub for learning and knowledge-sharing, fostering a vibrant and inclusive community of lifelong learners. Join us in exploring the world of information and ideas as we work together to build a brighter future for Pasig City.</p>
           </div>
         </div>
       </div>
@@ -273,6 +341,21 @@
             var action = form.attr('action');
             form.attr('action', action + '/' + bookId);
         });
+    });
+
+    // Get the time input element
+    var timeInput = document.getElementById('time_session');
+
+    // Add change event listener to the time input
+    timeInput.addEventListener('change', function() {
+        // Get the selected time value
+        var selectedTime = this.value;
+
+        // Extract the AM/PM value from the selected time
+        var ampm = selectedTime.split(' ')[1];
+
+        // Display the AM/PM value
+        document.getElementById('ampm_display').textContent = ampm;
     });
 </script>
 

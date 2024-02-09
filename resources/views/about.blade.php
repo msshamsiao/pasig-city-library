@@ -19,11 +19,11 @@
   <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;500&family=Inter:wght@400;500&family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
 
   <!-- Vendor CSS Files -->
-<link href="{{ asset('assets/vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
-<link href="{{ asset('assets/vendor/bootstrap-icons/bootstrap-icons.css') }}" rel="stylesheet">
-<link href="{{ asset('assets/vendor/swiper/swiper-bundle.min.css') }}" rel="stylesheet">
-<link href="{{ asset('assets/vendor/glightbox/css/glightbox.min.css') }}" rel="stylesheet">
-<link href="{{ asset('assets/vendor/aos/aos.css') }}" rel="stylesheet">  
+  <link href="{{ asset('assets/vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
+  <link href="{{ asset('assets/vendor/bootstrap-icons/bootstrap-icons.css') }}" rel="stylesheet">
+  <link href="{{ asset('assets/vendor/swiper/swiper-bundle.min.css') }}" rel="stylesheet">
+  <link href="{{ asset('assets/vendor/glightbox/css/glightbox.min.css') }}" rel="stylesheet">
+  <link href="{{ asset('assets/vendor/aos/aos.css') }}" rel="stylesheet">  
 
 
   <!-- Template Main CSS Files -->
@@ -45,9 +45,8 @@
   <header id="header" class="header d-flex align-items-center fixed-top">
     <div class="container-fluid container-xl d-flex align-items-center justify-content-between">
 
-      <a href="index.html" class="logo d-flex align-items-center">
-        <!-- Uncomment the line below if you also wish to use an image logo -->
-        <img src="{{ asset('Pasig_Logo.png') }}" alt="Pasig Logo" width="50" height="80">
+      <a href="home.html" class="logo d-flex align-items-center">
+        <img src="{{ asset('assets/Pasig_Logo.png') }}" alt="Pasig Logo" width="50" height="80">
       </a>
 
       <nav id="navbar" class="navbar">
@@ -96,55 +95,30 @@
 
           <div class="d-md-flex post-entry-2 half">
             <a href="#" class="me-4 thumbnail">
-              <img src="assets/img/post-landscape-2.jpg" alt="" class="img-fluid">
+              <img src="assets/img/images3.jpg" alt="" class="img-fluid">
             </a>
             <div class="ps-md-5 mt-4 mt-md-0">
               <div class="post-meta mt-4">About us</div>
-              <h2 class="mb-4 display-4">Pasig City Library Consortiun</h2>
-
-              <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Facilis, perspiciatis repellat maxime, adipisci non ipsam at itaque rerum vitae, necessitatibus nulla animi expedita cumque provident inventore? Voluptatum in tempora earum deleniti, culpa odit veniam, ea reiciendis sunt ullam temporibus aut!</p>
-              <p>Fugit eaque illum blanditiis, quo exercitationem maiores autem laudantium unde excepturi dolores quasi eos vero harum ipsa quam laborum illo aut facere voluptates aliquam adipisci sapiente beatae ullam. Tempora culpa iusto illum accusantium cum hic quisquam dolor placeat officiis eligendi.</p>
+              <h2 class="mb-4 display-4">Pasig City Library Consortium</h2>
+              <p style="text-align: justify;">Welcome to the Pasig City Library Consortium (PCLC), a collaborative network of libraries. It promotes literacy, education, and community engagement in Pasig City. Through our combined efforts, we strive to provide access to a wide range of resources, including books, digital media, and educational programs, to enrich the lives of our residents. The Consortium serves as a hub for learning and knowledge-sharing, fostering a vibrant and inclusive community of lifelong learners. Join us in exploring the world of information and ideas as we work together to build a brighter future for Pasig City.</p>
             </div>
           </div>
 
           <div class="d-md-flex post-entry-2 half mt-5">
             <a href="#" class="me-4 thumbnail order-2">
-              <img src="assets/img/post-landscape-1.jpg" alt="" class="img-fluid">
+              <img src="assets/img/images1.png" alt="" class="img-fluid">
             </a>
             <div class="pe-md-5 mt-4 mt-md-0">
               <div class="post-meta mt-4">Mission &amp; Vision</div>
               <h2 class="mb-4 display-4">Mission &amp; Vision</h2>
 
-              <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Facilis, perspiciatis repellat maxime, adipisci non ipsam at itaque rerum vitae, necessitatibus nulla animi expedita cumque provident inventore? Voluptatum in tempora earum deleniti, culpa odit veniam, ea reiciendis sunt ullam temporibus aut!</p>
-              <p>Fugit eaque illum blanditiis, quo exercitationem maiores autem laudantium unde excepturi dolores quasi eos vero harum ipsa quam laborum illo aut facere voluptates aliquam adipisci sapiente beatae ullam. Tempora culpa iusto illum accusantium cum hic quisquam dolor placeat officiis eligendi.</p>
+              <p style="text-align: justify;">To empower individuals through access to diverse resources, knowledge, and learning opportunities, fostering a culture of literacy, lifelong learning, and community engagement in Pasig City.</p>
+              <p style="text-align: justify;">The Pasig City Library Consortium envisions a vibrant and inclusive community where every resident can access quality educational resources, innovative programs, and collaborative spaces that inspire curiosity, creativity, and continuous personal and professional growth. Through our efforts, we aim to cultivate a society of informed and empowered individuals who contribute to the progress and development of Pasig City.</p>
             </div>
           </div>
 
         </div>
 
-      </div>
-    </section>
-
-    <section class="mb-5 bg-light py-5">
-      <div class="container" data-aos="fade-up">
-        <div class="row justify-content-between align-items-lg-center">
-          <div class="col-lg-5 mb-4 mb-lg-0">
-            <h2 class="display-4 mb-4">Latest News</h2>
-            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Sed, rem eaque vel est asperiores iste pariatur placeat molestias, rerum provident ea maiores debitis eum earum esse quas architecto! Minima, voluptatum! Minus tempora distinctio quo sint est blanditiis voluptate eos. Commodi dolore nesciunt culpa adipisci nemo expedita suscipit autem dolorum rerum?</p>
-            <p>At magni dolore ullam odio sapiente ipsam, numquam eius minus animi inventore alias quam fugit corrupti error iste laboriosam dolorum culpa doloremque eligendi repellat iusto vel impedit odit cum. Sequi atque molestias nesciunt rem eum pariatur quibusdam deleniti saepe eius maiores porro quam, praesentium ipsa deserunt laboriosam adipisci. Optio, animi!</p>
-            <p><a href="#" class="more">View All Blog Posts</a></p>
-          </div>
-          <div class="col-lg-6">
-            <div class="row">
-              <div class="col-6">
-                <img src="assets/img/post-portrait-3.jpg" alt="" class="img-fluid mb-4">
-              </div>
-              <div class="col-6 mt-4">
-                <img src="assets/img/post-portrait-4.jpg" alt="" class="img-fluid mb-4">
-              </div>
-            </div>
-          </div>
-        </div>
       </div>
     </section>
 
@@ -155,45 +129,19 @@
             <div class="row justify-content-center">
               <div class="col-lg-6">
                 <h2 class="display-4">Our Team</h2>
-                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nihil sint sed, fugit distinctio ad eius itaque deserunt doloribus harum excepturi laudantium sit officiis et eaque blanditiis. Dolore natus excepturi recusandae.</p>
               </div>
             </div>
           </div>
           <div class="col-lg-4 text-center mb-5">
-            <img src="assets/img/person-1.jpg" alt="" class="img-fluid rounded-circle w-50 mb-4">
-            <h4>Cameron Williamson</h4>
-            <span class="d-block mb-3 text-uppercase">Founder &amp; CEO</span>
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Facilis, perspiciatis repellat maxime, adipisci non ipsam at itaque rerum vitae, necessitatibus nulla animi expedita cumque provident inventore? Voluptatum in tempora earum deleniti, culpa odit veniam, ea reiciendis sunt ullam temporibus aut!</p>
+            <img src="assets/img/RAC.jpeg" alt="" class="img-fluid rounded-circle w-50 mb-4">
+            <h4>Racquel A. Cortez</h4>
+            <span class="d-block mb-3 text-uppercase">Project Manager</span>
           </div>
+
           <div class="col-lg-4 text-center mb-5">
-            <img src="assets/img/person-2.jpg" alt="" class="img-fluid rounded-circle w-50 mb-4">
-            <h4>Wade Warren</h4>
-            <span class="d-block mb-3 text-uppercase">Founder, VP</span>
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Facilis, perspiciatis repellat maxime, adipisci non ipsam at itaque rerum vitae, necessitatibus nulla animi expedita cumque provident inventore? Voluptatum in tempora earum deleniti, culpa odit veniam, ea reiciendis sunt ullam temporibus aut!</p>
-          </div>
-          <div class="col-lg-4 text-center mb-5">
-            <img src="assets/img/person-3.jpg" alt="" class="img-fluid rounded-circle w-50 mb-4">
-            <h4>Jane Cooper</h4>
-            <span class="d-block mb-3 text-uppercase">Editor Staff</span>
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Facilis, perspiciatis repellat maxime, adipisci non ipsam at itaque rerum vitae, necessitatibus nulla animi expedita cumque provident inventore? Voluptatum in tempora earum deleniti, culpa odit veniam, ea reiciendis sunt ullam temporibus aut!</p>
-          </div>
-          <div class="col-lg-4 text-center mb-5">
-            <img src="assets/img/person-4.jpg" alt="" class="img-fluid rounded-circle w-50 mb-4">
-            <h4>Cameron Williamson</h4>
-            <span class="d-block mb-3 text-uppercase">Editor Staff</span>
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Facilis, perspiciatis repellat maxime, adipisci non ipsam at itaque rerum vitae, necessitatibus nulla animi expedita cumque provident inventore? Voluptatum in tempora earum deleniti, culpa odit veniam, ea reiciendis sunt ullam temporibus aut!</p>
-          </div>
-          <div class="col-lg-4 text-center mb-5">
-            <img src="assets/img/person-5.jpg" alt="" class="img-fluid rounded-circle w-50 mb-4">
-            <h4>Cameron Williamson</h4>
-            <span class="d-block mb-3 text-uppercase">Editor Staff</span>
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Facilis, perspiciatis repellat maxime, adipisci non ipsam at itaque rerum vitae, necessitatibus nulla animi expedita cumque provident inventore? Voluptatum in tempora earum deleniti, culpa odit veniam, ea reiciendis sunt ullam temporibus aut!</p>
-          </div>
-          <div class="col-lg-4 text-center mb-5">
-            <img src="assets/img/person-6.jpg" alt="" class="img-fluid rounded-circle w-50 mb-4">
-            <h4>Cameron Williamson</h4>
-            <span class="d-block mb-3 text-uppercase">Editor Staff</span>
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Facilis, perspiciatis repellat maxime, adipisci non ipsam at itaque rerum vitae, necessitatibus nulla animi expedita cumque provident inventore? Voluptatum in tempora earum deleniti, culpa odit veniam, ea reiciendis sunt ullam temporibus aut!</p>
+            <img src="assets/img/SAM.jpeg" alt="" class="img-fluid rounded-circle w-50 mb-4">
+            <h4>Samantha Siao</h4>
+            <span class="d-block mb-3 text-uppercase">Software Engineer</span>
           </div>
         </div>
       </div>
@@ -210,8 +158,7 @@
           <div class="row g-5">
             <div class="col-lg-12">
               <h3 class="footer-heading">About Pasig City Library</h3>
-              <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Magnam ab, perspiciatis beatae autem deleniti voluptate nulla a dolores, exercitationem eveniet libero laudantium recusandae officiis qui aliquid blanditiis omnis quae. Explicabo?</p>
-              <p><a href="about.html" class="footer-link-more">Learn More</a></p>
+              <p>A collaborative network of libraries. It promotes literacy, education, and community engagement in Pasig City. Through our combined efforts, we strive to provide access to a wide range of resources, including books, digital media, and educational programs, to enrich the lives of our residents. The Consortium serves as a hub for learning and knowledge-sharing, fostering a vibrant and inclusive community of lifelong learners. Join us in exploring the world of information and ideas as we work together to build a brighter future for Pasig City.</p>
             </div>
           </div>
         </div>

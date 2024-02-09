@@ -19,8 +19,11 @@ class BookFactory extends Factory
         $issn = $this->faker->optional(0.7)->isbn10;
         $issn = $issn !== null ? $issn : $this->faker->unique()->isbn10;
 
-        // Define an array of possible schools
-        $schools = ['School A', 'School B', 'School C', 'School D', 'School E'];
+        // Retrieve distinct member_library_names from the database
+        $memberLibraryNames = \App\Models\MemberLibrary::distinct('member_library_name')->pluck('id')->toArray();
+
+        // Define the schools array using the retrieved data
+        $schools = count($memberLibraryNames) > 0 ? $memberLibraryNames : ['Default School A', 'Default School B', 'Default School C'];
 
         return [
             'title' => $this->faker->sentence,

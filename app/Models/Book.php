@@ -16,7 +16,10 @@ class Book extends Model
         'isbn', 
         'issn', 
         'available', 
-        'school'
+        'school',
+        'resource_type',
+        'call_number',
+        'status'
     ];
 
     public function scopeSearch($query, $searchTerm){
@@ -25,5 +28,10 @@ class Book extends Model
                      ->orWhere('subject', 'like', '%' . $searchTerm . '%')
                      ->orWhere('isbn', 'like', '%' . $searchTerm . '%')
                      ->orWhere('issn', 'like', '%' . $searchTerm . '%');
+    }
+
+    public function memberLibrary()
+    {
+        return $this->belongsTo(MemberLibrary::class, 'school', 'id');
     }
 }

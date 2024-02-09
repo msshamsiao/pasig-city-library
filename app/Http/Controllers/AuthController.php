@@ -20,8 +20,12 @@ class AuthController extends Controller
 
         if (Auth::attempt($credentials)) {
             // Check if the authenticated user is an admin
-            if (Auth::user()->admin) {
+            if (Auth::user()->admin == 1 || Auth::user()->admin == 2) {
                 return redirect()->route('admin.dashboard');
+            }
+
+            if (Auth::user()->admin == 0) {
+                return redirect()->route('admin.user_transaction');
             }
 
             // For regular users, you can redirect to a different route or the default '/dashboard'

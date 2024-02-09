@@ -19,12 +19,11 @@
   <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;500&family=Inter:wght@400;500&family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
 
   <!-- Vendor CSS Files -->
-<link href="{{ asset('assets/vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
-<link href="{{ asset('assets/vendor/bootstrap-icons/bootstrap-icons.css') }}" rel="stylesheet">
-<link href="{{ asset('assets/vendor/swiper/swiper-bundle.min.css') }}" rel="stylesheet">
-<link href="{{ asset('assets/vendor/glightbox/css/glightbox.min.css') }}" rel="stylesheet">
-<link href="{{ asset('assets/vendor/aos/aos.css') }}" rel="stylesheet">  
-
+  <link href="{{ asset('assets/vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
+  <link href="{{ asset('assets/vendor/bootstrap-icons/bootstrap-icons.css') }}" rel="stylesheet">
+  <link href="{{ asset('assets/vendor/swiper/swiper-bundle.min.css') }}" rel="stylesheet">
+  <link href="{{ asset('assets/vendor/glightbox/css/glightbox.min.css') }}" rel="stylesheet">
+  <link href="{{ asset('assets/vendor/aos/aos.css') }}" rel="stylesheet">  
 
   <!-- Template Main CSS Files -->
   <link href="assets/css/variables.css" rel="stylesheet">
@@ -45,9 +44,8 @@
   <header id="header" class="header d-flex align-items-center fixed-top">
     <div class="container-fluid container-xl d-flex align-items-center justify-content-between">
 
-      <a href="index.html" class="logo d-flex align-items-center">
-        <!-- Uncomment the line below if you also wish to use an image logo -->
-        <img src="{{ asset('Pasig_Logo.png') }}" alt="Pasig Logo" width="50" height="80">
+      <a href="home.html" class="logo d-flex align-items-center">
+        <img src="{{ asset('assets/Pasig_Logo.png') }}" alt="Pasig Logo" width="50" height="80">
       </a>
 
       <nav id="navbar" class="navbar">
@@ -95,30 +93,14 @@
               </div>
             </div>
           </div>
-          <div class="col-lg-4 text-center mb-5">
-            <a href="https://plpasig.edu.ph/" target="_blank"><img src="assets/img/PLP_logo.jpg" alt="" class="img-fluid rounded-circle w-50 mb-4"></a>
-            <h4>Pamantasan ng Lungsod ng Pasig</h4>
-            <span class="d-block mb-3 text-uppercase"></span>
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Facilis, perspiciatis repellat maxime, adipisci non ipsam at itaque rerum vitae, necessitatibus nulla animi expedita cumque provident inventore? Voluptatum in tempora earum deleniti, culpa odit veniam, ea reiciendis sunt ullam temporibus aut!</p>
-          </div>
-          <div class="col-lg-4 text-center mb-5">
-            <a href="https://www.pcshs.org/resources" target="_blank"><img src="assets/img/PCSHS_logo.png" alt="" class="img-fluid rounded-circle w-50 mb-4"></a>
-            <h4>Pasig City Science High School</h4>
-            <span class="d-block mb-3 text-uppercase"></span>
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Facilis, perspiciatis repellat maxime, adipisci non ipsam at itaque rerum vitae, necessitatibus nulla animi expedita cumque provident inventore? Voluptatum in tempora earum deleniti, culpa odit veniam, ea reiciendis sunt ullam temporibus aut!</p>
-          </div>
-          <div class="col-lg-4 text-center mb-5">
-            <a href="https://www.pcshs.org/resources" target="_blank"><img src="assets/img/PCIST_logo.png" alt="" class="img-fluid rounded-circle w-50 mb-4"></a>
-            <h4>Pasig City Science Institute</h4>
-            <span class="d-block mb-3 text-uppercase"></span>
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Facilis, perspiciatis repellat maxime, adipisci non ipsam at itaque rerum vitae, necessitatibus nulla animi expedita cumque provident inventore? Voluptatum in tempora earum deleniti, culpa odit veniam, ea reiciendis sunt ullam temporibus aut!</p>
-          </div>
-          <div class="col-lg-4 text-center mb-5">
-            <a href="https://www.rhspasig.com/" target="_blank"><img src="assets/img/RHSlogo.jpg" alt="" class="img-fluid rounded-circle w-50 mb-4"></a>
-            <h4>Rizal High School Library</h4>
-            <span class="d-block mb-3 text-uppercase"></span>
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Facilis, perspiciatis repellat maxime, adipisci non ipsam at itaque rerum vitae, necessitatibus nulla animi expedita cumque provident inventore? Voluptatum in tempora earum deleniti, culpa odit veniam, ea reiciendis sunt ullam temporibus aut!</p>
-          </div>
+          @foreach ($members = \App\Models\MemberLibrary::where('status', 1)->get() as $member)
+            <div class="col-lg-4 text-center mb-5">
+                <a href="{{ $member->link }}" target="_blank"><img src="{{ asset('uploads/' . $member->image_logo) }}" alt="" class="img-fluid rounded-circle w-50 mb-4"></a>
+                <h4>{{ $member->name }}</h4>
+                <span class="d-block mb-3 text-uppercase"></span>
+                <p>{{ $member->description }}</p>
+            </div>
+          @endforeach
         </div>
       </div>
     </section>
@@ -134,8 +116,7 @@
           <div class="row g-5">
             <div class="col-lg-12">
               <h3 class="footer-heading">About Pasig City Library</h3>
-              <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Magnam ab, perspiciatis beatae autem deleniti voluptate nulla a dolores, exercitationem eveniet libero laudantium recusandae officiis qui aliquid blanditiis omnis quae. Explicabo?</p>
-              <p><a href="about.html" class="footer-link-more">Learn More</a></p>
+              <p>A collaborative network of libraries. It promotes literacy, education, and community engagement in Pasig City. Through our combined efforts, we strive to provide access to a wide range of resources, including books, digital media, and educational programs, to enrich the lives of our residents. The Consortium serves as a hub for learning and knowledge-sharing, fostering a vibrant and inclusive community of lifelong learners. Join us in exploring the world of information and ideas as we work together to build a brighter future for Pasig City.</p>
             </div>
           </div>
         </div>
