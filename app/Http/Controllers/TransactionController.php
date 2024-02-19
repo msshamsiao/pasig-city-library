@@ -165,25 +165,16 @@ class TransactionController extends Controller
             ['member_library', $request->input('member_library')],
         ])->first();
 
-        if (!$book->available) {
-            return Redirect::back()->withErrors(['error' => 'Book is not available for reservation']);
-        }
-
-        // Check if the user has an existing reservation for the same book
-        $existingReservation = Transaction::where('book_id', $book->id)
-            ->where('user_id', $user->id)
-            ->where('status', 'request')
-            ->first();
-
-        if ($existingReservation) {
-            return Redirect::back()->withErrors(['error' => 'User already has a reservation for this book']);
+        // Check if the book is available for reservation
+        if (!$this->isBookAvailable($book->isbn, $request->date, $request->ampm_select)) {
+            return Redirect::back()->withErrors(['error' => 'No available copies for this book']);
         }
 
         try {
             DB::beginTransaction();
 
             // Create a reservation record
-            Transaction::create([
+            $reservation = Transaction::create([
                 'user_id' => $user->id,
                 'book_id' => $book->id,
                 'status' => "request",
@@ -191,15 +182,56 @@ class TransactionController extends Controller
                 'ampm_session' => $request->ampm_select
             ]);
 
+            // Update copy count based on scheduled date and session
+            $this->updateCopyCount('request', $book->isbn, $request->date, $request->ampm_select);
+
             DB::commit();
 
-            return Redirect::back()->withSuccess('Successfully request a book. Please wait for approval');
+            return Redirect::back()->withSuccess('Successfully requested a book. Please wait for approval');
 
         } catch (\Exception $e) {
             DB::rollBack();
 
             return Redirect::back()->withErrors(['error' => 'Failed to reserve the book']);
         }
+    }
+
+    private function isBookAvailable($isbn, $scheduledDate, $session)
+    {
+        $book = Book::where('isbn', $isbn)->first();
+
+        if (!$book) {
+            // Handle case where book with given ISBN is not found
+            return false;
+        }
+
+        // Check if the scheduled date and session are greater than the current date and session
+        if ($scheduledDate > now()->toDateString() || ($scheduledDate == now()->toDateString() && $session == 'PM')) {
+            return $book->available > 0; // Check if there are available copies
+        } else {
+            return true; // Books scheduled in the past are always available
+        }
+    }
+ 
+    private function updateCopyCount($status, $isbn, $scheduledDate, $session)
+    {
+        $book = Book::where('isbn', $isbn)->first();
+
+        if (!$book) {
+            // Handle case where book with given ISBN is not found
+            return;
+        }
+
+        $countToChange = ($status === 'request') ? 1 : -1;
+
+        // Check if the scheduled date and session are greater than the current date and session
+        if ($scheduledDate > now()->toDateString() || ($scheduledDate == now()->toDateString() && $session == 'PM')) {
+            $book->available += $countToChange; // Increment available count
+        } else {
+            $book->available -= $countToChange; // Decrement available count
+        }
+
+        $book->save();
     }
 
     public function cancelBook($transactionId)
